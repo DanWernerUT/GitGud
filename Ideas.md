@@ -4,6 +4,9 @@
             - students
         - goal creation
         - search for people with similar goals
+        - dms
+        - group messages
+        - calender
         - ability to post 
         - reminders for set goals
             - allow user to set at chosen intervals
@@ -20,6 +23,13 @@
         - Whitenoise
             - custom track mixing
         - Use moters from phones to vibrate
-
+    - ** Export to Google Calender
+        - membership 
+    - **Models**
+        - Ads
+        - One Time Purchase
+        - *Membership*
+    
 # Problems to Solve:
-    - 
+    - Other goal apps are expensive and restrictive
+
