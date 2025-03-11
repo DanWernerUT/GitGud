@@ -9,4 +9,6 @@ https://www.figma.com/design/WIJRTK91TnSRSSFEy6lQME/Hive-Goals%3A-Navigation?nod
 
 Working Prototype:
 https://www.figma.com/design/qR2kJW8ITD6xOvA5H7fk8Q/Hive-Goals%3A-Prototype?node-id=0-1&t=1E1r0CY5nIZF69lf-1
- 
+
+Target Market
+https://docs.google.com/document/d/1UCeFO_ucK7_B6tVP3dEj5LIU3oNEJSQyB5tGHtFYiI0/edit?usp=sharing
