@@ -1,6 +1,3 @@
-Markdown Cheatsheet:
-https://github.com/tchapi/markdown-cheatsheet/blob/master/README.md
-
 Site Map Figma:
 https://www.figma.com/board/yu4MQa1NItcSylbrdCtj35/Hive-Goals-Site-Map?node-id=0-1&t=tsm1bvXQg13qmWWl-1
 
