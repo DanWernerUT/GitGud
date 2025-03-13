@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive_goals_flutter/res/hiveColors.dart';
 
+// class HiveColors{
+//   static const Color banana   = Color.fromRGBO(253, 236, 171, 1);
+//   static const Color yellow   = Color.fromRGBO(250, 208, 44, 1); 
+//   static const Color honey    = Color.fromRGBO(193, 130, 43, 1);
+//   static const Color lavender = Color.fromRGBO(129, 119, 152, 1);
+//   static const Color darkPurple = Color.fromRGBO(50, 43, 66, 1);
+// }
 void main() {
   runApp(const MyApp());
 }
@@ -28,9 +36,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: HiveColors.yellow),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Welcome @username'),
     );
   }
 }
