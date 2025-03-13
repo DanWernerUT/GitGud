@@ -1,4 +1,5 @@
 # V1 Requirements
-    - swift
+    - flutter
+    - android studio
     - github
     - 
