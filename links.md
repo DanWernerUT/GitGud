@@ -24,3 +24,4 @@
     - https://beepbox.co/
     - https://godotengine.org/ 
     - https://coolors.co/
+    - https://www.sqlitetutorial.net/
