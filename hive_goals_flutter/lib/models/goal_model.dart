@@ -3,7 +3,7 @@ class Goal {
   final String name;
   final String text;
   final String? tags;
-  final double? duration;
+  final int? duration;
 
   const Goal({
     this.id,
@@ -16,10 +16,10 @@ class Goal {
   factory Goal.fromMap(Map<String, dynamic> json) {
     return Goal(
       id: json['id'] as int?,
-      name: json['name'] as String,
-      text: json['text'] as String,
+      name: (json['name'] as String?) ?? '',
+      text: (json['text'] as String?) ?? '',
       tags: json['tags'] as String?,
-      duration: (json['duration'] as num?)?.toDouble(),
+      duration: json['duration'] as int?,
     );
   }
 

@@ -16,19 +16,33 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, 'goal.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
   
+  void _onUpgrade(Database db, int oldVersion, int newVersion) {
+    if(oldVersion < newVersion) {
+      db.execute("ALTER TABLE goal ADD COLUMN name TEXT;");
+      db.execute("ALTER TABLE goal ADD COLUMN text TEXT;");
+      db.execute("ALTER TABLE goal ADD COLUMN tags TEXT;");
+      db.execute("ALTER TABLE goal ADD COLUMN duration INTEGER;");
+    }
+  }
+
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE goal(
         id INTEGER PRIMARY KEY,
-        name TEXT
+        name TEXT,
+        text TEXT,
+        tags TEXT,
+        duration INTEGER
       )
     ''');
   }
+
   Future<List<Goal>> getGoal() async {
     Database db = await instance.database;
     var goal = await db.query('goal', orderBy: 'name');
