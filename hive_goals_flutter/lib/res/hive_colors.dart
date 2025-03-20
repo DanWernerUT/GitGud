@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HiveColors {
+  static const Color    chiffon = Color.fromRGBO(255, 244, 200, 1);     
   static const Color     banana = Color.fromRGBO(253, 236, 171, 1);     
   static const Color        tan = Color.fromRGBO(224, 193, 149, 1);     
   static const Color     yellow = Color.fromRGBO(250, 208, 44, 1);      
