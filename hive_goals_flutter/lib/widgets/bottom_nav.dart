@@ -120,7 +120,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          if (_isCalendarMenuOpen)
+          if (_isCalendarMenuOpen || _isGoalsMenuOpen)
             AnimatedBuilder(
               animation: _menuAnimation,
               builder: (context, child) {
@@ -145,45 +145,15 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            _buildMenuItem(4, "View Calendar", context, effectiveActiveIndex),
-                            _buildMenuItem(5, "Create Event", context, effectiveActiveIndex),
-                            _buildMenuItem(-1, "", context, effectiveActiveIndex),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          if (_isGoalsMenuOpen)
-            AnimatedBuilder(
-              animation: _menuAnimation,
-              builder: (context, child) {
-                return Positioned(
-                  bottom: 47,
-                  right: 30,
-                  child: Opacity(
-                    opacity: _menuAnimation.value,
-                    child: Transform.translate(
-                      offset: Offset(0, (1 - _menuAnimation.value) * 20),
-                      child: Container(
-                        width: navBarWidth,
-                        decoration: BoxDecoration(
-                          color: Colors.white70,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(45),
-                            topRight: Radius.circular(45),
-                            bottomRight: Radius.circular(10),
-                            bottomLeft: Radius.circular(10),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            _buildMenuItem(7, "Create Goal", context, effectiveActiveIndex),
-                            _buildMenuItem(8, "View Goals", context, effectiveActiveIndex),
-                            _buildMenuItem(-1, "", context, effectiveActiveIndex),
+                            if (_isCalendarMenuOpen) ...[
+                              _buildMenuItem(4, "View Calendar", context, effectiveActiveIndex),
+                              _buildMenuItem(5, "Create Event", context, effectiveActiveIndex),
+                              _buildMenuItem(-1, "", context, effectiveActiveIndex),
+                            ] else if (_isGoalsMenuOpen) ...[
+                              _buildMenuItem(7, "Create Goal", context, effectiveActiveIndex),
+                              _buildMenuItem(8, "View Goals", context, effectiveActiveIndex),
+                              _buildMenuItem(-1, "", context, effectiveActiveIndex),
+                            ]
                           ],
                         ),
                       ),
