@@ -4,7 +4,7 @@ import 'package:hive_goals_flutter/res/hive_colors.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
-  final Function(int) onTap;
+  final Function(int) onTap; 
   
   const BottomNavBar({
     super.key,
