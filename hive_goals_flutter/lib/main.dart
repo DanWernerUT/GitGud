@@ -1,110 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
 import 'package:hive_goals_flutter/pages/splash.dart';
-
+import 'package:hive_goals_flutter/pages/home.dart';
+import 'package:hive_goals_flutter/pages/goals.dart';
+import 'package:hive_goals_flutter/widgets/bottom_nav.dart';
+import 'package:hive_goals_flutter/pages/create_goal.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const HiveGoals());
 }
 
-class HiveGoals extends StatelessWidget {
+class HiveGoals extends StatefulWidget {
   const HiveGoals({super.key});
 
-  // This widget is the root of your application.
+  @override
+  _HiveGoalsState createState() => _HiveGoalsState();
+}
+
+class _HiveGoalsState extends State<HiveGoals> {
+  int _selectedIndex = 0;  // Default selected index is 0 (home page)
+
+  // Define a method to change screen based on the selected index
+  void _onTabTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  // Method to build screens based on selected tab index
+  Widget _buildScreenForIndex(int index) {
+    switch (index) {
+      case 0:
+        return Center(child: Text('Connections Page'));
+      case 1:
+        return Center(child: Text('Messages Page'));
+      case 2:
+        return Center(child: Text('Create Goal Screen'));
+      case 4:
+        return Center(child: Text('View Calendar'));
+      case 5:
+        return Center(child: Text('Create Event'));
+      case 7:
+        return CreateGoalPage();
+        // return Center(child: Text('Create Goal'));
+      case 8:
+        return UserGoalPage();
+      default:
+        return MyHomePage(title: 'Hive Goals Home');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hive Goals',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: HiveColors.lavender),
+        colorScheme: ColorScheme.fromSeed(seedColor: HiveColors.background),
       ),
-      home: SplashScreen(),
+      builder: (context, child) {
+        return ScrollConfiguration(
+          behavior: ScrollBehavior().copyWith(
+            physics: const ClampingScrollPhysics(), // Prevents overscroll stretching
+            overscroll: false, // Disables the overscroll glow effect
+          ),
+          child: child!,
+        );
+      },
+      home: Builder(
+        builder: (context) {
+          // Using Builder to get the correct context for MediaQuery
+          return Scaffold(
+            backgroundColor: HiveColors.background,
+            // appBar: AppBar(
+            //   backgroundColor: HiveColors.platinum,
+            //   title: Text('Hive Goals'),
+            // ),
+            // The body now fills the entire space beneath the AppBar
+            body: Stack(
+              children: [
+                // Your page content
+                _buildScreenForIndex(_selectedIndex),
+                
+                // Bottom navigation bar that sits on top of everything
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: BottomNavBar(
+                    currentIndex: _selectedIndex, 
+                    onTap: _onTabTapped,
+                  ),
+                ),
+              ],
+            ),
+            // Remove the bottomNavigationBar property from Scaffold
+            // bottomNavigationBar: null,
+          );
+        }
+      ),
     );
   }
 }
-
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
-
-//   // This widget is the home page of your application. It is stateful, meaning
-//   // that it has a State object (defined below) that contains fields that affect
-//   // how it looks.
-
-//   // This class is the configuration for the state. It holds the values (in this
-//   // case the title) provided by the parent (in this case the App widget) and
-//   // used by the build method of the State. Fields in a Widget subclass are
-//   // always marked "final".
-
-//   final String title;
-
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
-
-// class _MyHomePageState extends State<MyHomePage> {
-//   int _counter = 0;
-
-//   void _incrementCounter() {
-//     setState(() {
-//       // This call to setState tells the Flutter framework that something has
-//       // changed in this State, which causes it to rerun the build method below
-//       // so that the display can reflect the updated values. If we changed
-//       // _counter without calling setState(), then the build method would not be
-//       // called again, and so nothing would appear to happen.
-//       _counter++;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       appBar: AppBar(
-//         // TRY THIS: Try changing the color here to a specific color (to
-//         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-//         // change color while the other colors stay the same.
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: Text(widget.title),
-//       ),
-//       body: Center(
-//         // Center is a layout widget. It takes a single child and positions it
-//         // in the middle of the parent.
-//         child: Column(
-//           // Column is also a layout widget. It takes a list of children and
-//           // arranges them vertically. By default, it sizes itself to fit its
-//           // children horizontally, and tries to be as tall as its parent.
-//           //
-//           // Column has various properties to control how it sizes itself and
-//           // how it positions its children. Here we use mainAxisAlignment to
-//           // center the children vertically; the main axis here is the vertical
-//           // axis because Columns are vertical (the cross axis would be
-//           // horizontal).
-//           //
-//           // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-//           // action in the IDE, or press "p" in the console), to see the
-//           // wireframe for each widget.
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             const Text('You have pushed the button this many times:'),
-//             Text(
-//               '$_counter',
-//               style: Theme.of(context).textTheme.headlineMedium,
-//             ),
-//           ],
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
