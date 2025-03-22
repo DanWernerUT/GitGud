@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
-// import 'package:hive_goals_flutter/pages/splash.dart';
 import 'package:hive_goals_flutter/pages/home.dart';
 import 'package:hive_goals_flutter/pages/goals.dart';
 import 'package:hive_goals_flutter/widgets/bottom_nav.dart';
 import 'package:hive_goals_flutter/pages/create_goal.dart';
+import 'package:hive_goals_flutter/services/app_state.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const HiveGoals());
@@ -14,10 +15,11 @@ class HiveGoals extends StatefulWidget {
   const HiveGoals({super.key});
 
   @override
-  _HiveGoalsState createState() => _HiveGoalsState();
+  State<HiveGoals> createState() => _HiveGoalsState();
 }
 
 class _HiveGoalsState extends State<HiveGoals> {
+  
   int _selectedIndex = 0;  // Default selected index is 0 (home page)
 
   // Define a method to change screen based on the selected index
@@ -27,26 +29,37 @@ class _HiveGoalsState extends State<HiveGoals> {
     });
   }
 
-  // Method to build screens based on selected tab index
+  @override
+  void initState() {
+    super.initState();
+    AppState().changeTabCallback = _onTabTapped;
+  }
+
+
   Widget _buildScreenForIndex(int index) {
     switch (index) {
       case 0:
-        return Center(child: Text('Connections Page'));
+        return const Center(child: Text('Connections Page'));
       case 1:
-        return Center(child: Text('Messages Page'));
+        return const Center(child: Text('Messages Page'));
       case 2:
-        return Center(child: Text('Create Goal Screen'));
+        return const Center(child: Text('Create Goal Screen'));
+      case 3:
+        // Calendar menu itself
+        return const Center(child: Text('Calendar Menu'));
       case 4:
-        return Center(child: Text('View Calendar'));
+        return const Center(child: Text('View Calendar'));
       case 5:
-        return Center(child: Text('Create Event'));
+        return const Center(child: Text('Create Event'));
+      case 6:
+        // Goals menu itself
+        return const Center(child: Text('Goals Menu'));
       case 7:
-        return CreateGoalPage();
-        // return Center(child: Text('Create Goal'));
+        return const CreateGoalPage();
       case 8:
-        return UserGoalPage();
+        return const UserGoalPage();
       default:
-        return MyHomePage(title: 'Hive Goals Home');
+        return const MyHomePage(title: 'Hive Goals Home');
     }
   }
 
@@ -68,14 +81,8 @@ class _HiveGoalsState extends State<HiveGoals> {
       },
       home: Builder(
         builder: (context) {
-          // Using Builder to get the correct context for MediaQuery
           return Scaffold(
             backgroundColor: HiveColors.background,
-            // appBar: AppBar(
-            //   backgroundColor: HiveColors.platinum,
-            //   title: Text('Hive Goals'),
-            // ),
-            // The body now fills the entire space beneath the AppBar
             body: Stack(
               children: [
                 // Your page content
@@ -87,14 +94,12 @@ class _HiveGoalsState extends State<HiveGoals> {
                   right: 0,
                   bottom: 0,
                   child: BottomNavBar(
-                    currentIndex: _selectedIndex, 
+                    currentIndex: _selectedIndex,
                     onTap: _onTabTapped,
                   ),
                 ),
               ],
             ),
-            // Remove the bottomNavigationBar property from Scaffold
-            // bottomNavigationBar: null,
           );
         }
       ),

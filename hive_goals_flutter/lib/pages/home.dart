@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hive_goals_flutter/models/goal_model.dart';
+// import 'package:hive_goals_flutter/models/goal_model.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
-import 'package:hive_goals_flutter/services/database_helper.dart';
+// import 'package:hive_goals_flutter/services/database_helper.dart';
 // import 'package:hive_goals_flutter/widgets/bottom_nav.dart';
 // import 'package:hive_goals_flutter/pages/goals.dart';
 
@@ -17,13 +17,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final textController = TextEditingController();
   int? selectedId;
-  int _selectedIndex = 2;
-  late Future<List<Goal>> _goalsFuture;
+  // int _selectedIndex = 2;
+  // late Future<List<Goal>> _goalsFuture;
 
   @override
   void initState() {
     super.initState();
-    _goalsFuture = DatabaseHelper.instance.getGoal();
+    // _goalsFuture = DatabaseHelper.instance.getGoal();
   }
 
   @override

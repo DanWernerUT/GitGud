@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive_goals_flutter/models/goal_model.dart';
-import 'package:hive_goals_flutter/services/database_helper.dart';
+// import 'package:hive_goals_flutter/models/goal_model.dart';
+// import 'package:hive_goals_flutter/services/database_helper.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
 import 'package:hive_goals_flutter/widgets/top_nav.dart';
+import 'package:hive_goals_flutter/services/app_state.dart';
 
 class UserGoalPage extends StatefulWidget {
   const UserGoalPage({super.key});
@@ -18,9 +19,7 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
   late AnimationController controllerMonthly;
   late AnimationController controllerTotal;
   int? selectedId;
-  // late Future<List<Goal>> _goalsFuture;
-  
-  // Maps to track the checked state of each goal
+
   final Map<String, bool> dailyGoalsChecked = {};
   final Map<String, bool> weeklyGoalsChecked = {};
   final Map<String, bool> monthlyGoalsChecked = {};
@@ -63,13 +62,6 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
     }
   }
 
-  // void _refreshGoals() {
-  //   setState(() {
-  //     _goalsFuture = DatabaseHelper.instance.getGoal();
-  //   });
-  // }
-  
-  // Calculate progress based on checked goals
   void _updateProgress() {
     // Count checked goals
     int dailyChecked = dailyGoalsChecked.values.where((checked) => checked).length;
@@ -154,7 +146,7 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
                 ),
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white, size: 32),
-                  onPressed: () {},
+                  onPressed: () {AppState().changeTabCallback?.call(7);},
                 ),
               ],
             ),
@@ -181,7 +173,7 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
                 ),
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white, size: 32),
-                  onPressed: () {},
+                  onPressed: () {AppState().changeTabCallback?.call(7);},
                 ),
               ],
             ),
@@ -208,7 +200,7 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
                 ),
                 IconButton(
                   icon: const Icon(Icons.add, color: Colors.white, size: 32),
-                  onPressed: () {},
+                  onPressed: () {AppState().changeTabCallback?.call(7);},
                 ),
               ],
             ),
@@ -228,6 +220,7 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
           ],
         ),
       ),
+      // bottomNavigationBar: BottomNavBar(),
     );
   }
 
