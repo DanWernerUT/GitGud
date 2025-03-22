@@ -4,7 +4,7 @@ import 'package:hive_goals_flutter/res/hive_colors.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
-  final Function(int) onTap; 
+  final Function(int) onTap;
   
   const BottomNavBar({
     super.key,
@@ -70,9 +70,23 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
       });
     }
   }
-  
+
+  int _highlightedIndex = 0;
+
   void _handleNavTap(int index) {
     switch(index){
+      case 0:
+        _highlightedIndex = 0;
+        widget.onTap(0);
+        break;
+      case 1:
+        _highlightedIndex = 1;
+        widget.onTap(1);
+        break;
+      case 2:
+        _highlightedIndex = 2;
+        widget.onTap(2);
+        break;
       case 3: 
         if(_isCalendarMenuOpen){
           _closeMenus();
@@ -80,13 +94,15 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
           _closeMenus();
          _toggleCalendarMenu();
         }
-        widget.onTap(3);
+        _highlightedIndex = 3;
         break;
       case 4:
         widget.onTap(4);
+        _highlightedIndex = 4;
         break;
       case 5:
         widget.onTap(5);
+        _highlightedIndex = 5;
         break;
       case 6:
         if(_isGoalsMenuOpen) {
@@ -95,13 +111,15 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
          _closeMenus();
          _toggleGoalsMenu();
         }
-        widget.onTap(6);
+        _highlightedIndex = 6;
         break;
       case 7:
         widget.onTap(7);
+        _highlightedIndex = 7;
         break;
       case 8:
         widget.onTap(8);
+       _highlightedIndex = 8;
         break;
       default: 
         _closeMenus();
@@ -113,14 +131,14 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final navBarWidth = MediaQuery.of(context).size.width - 60;
     
-    int effectiveActiveIndex = widget.currentIndex;    
+    int effectiveActiveIndex = _highlightedIndex;    
     return SizedBox(
       height: 250,
       child: Stack(
         clipBehavior: Clip.none,
         alignment: Alignment.bottomCenter,
         children: [
-          if (_isCalendarMenuOpen || _isGoalsMenuOpen)
+          if (_isCalendarMenuOpen)
             AnimatedBuilder(
               animation: _menuAnimation,
               builder: (context, child) {
@@ -134,7 +152,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                       child: Container(
                         width: navBarWidth,
                         decoration: BoxDecoration(
-                          color: Colors.white70,
+                          color: HiveColors.steel,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(45),
                             topRight: Radius.circular(45),
@@ -145,15 +163,45 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (_isCalendarMenuOpen) ...[
-                              _buildMenuItem(4, "View Calendar", context, effectiveActiveIndex),
-                              _buildMenuItem(5, "Create Event", context, effectiveActiveIndex),
-                              _buildMenuItem(-1, "", context, effectiveActiveIndex),
-                            ] else if (_isGoalsMenuOpen) ...[
-                              _buildMenuItem(7, "Create Goal", context, effectiveActiveIndex),
-                              _buildMenuItem(8, "View Goals", context, effectiveActiveIndex),
-                              _buildMenuItem(-1, "", context, effectiveActiveIndex),
-                            ]
+                            _buildMenuItem(4, "View Calendar", context, effectiveActiveIndex),
+                            _buildMenuItem(5, "Create Event", context, effectiveActiveIndex),
+                            _buildMenuItem(-1, "", context, effectiveActiveIndex),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          if (_isGoalsMenuOpen)
+            AnimatedBuilder(
+              animation: _menuAnimation,
+              builder: (context, child) {
+                return Positioned(
+                  bottom: 47,
+                  right: 30,
+                  child: Opacity(
+                    opacity: _menuAnimation.value,
+                    child: Transform.translate(
+                      offset: Offset(0, (1 - _menuAnimation.value) * 20),
+                      child: Container(
+                        width: navBarWidth,
+                        decoration: BoxDecoration(
+                          color: HiveColors.steel,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(45),
+                            topRight: Radius.circular(45),
+                            bottomRight: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildMenuItem(7, "Create Goal", context, effectiveActiveIndex),
+                            _buildMenuItem(8, "View Goals", context, effectiveActiveIndex),
+                            _buildMenuItem(-1, "", context, effectiveActiveIndex),
                           ],
                         ),
                       ),

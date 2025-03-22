@@ -4,7 +4,12 @@ import 'package:hive_goals_flutter/pages/home.dart';
 import 'package:hive_goals_flutter/pages/goals.dart';
 import 'package:hive_goals_flutter/widgets/bottom_nav.dart';
 import 'package:hive_goals_flutter/pages/create_goal.dart';
+import 'package:hive_goals_flutter/pages/create_event.dart';
 import 'package:hive_goals_flutter/services/app_state.dart';
+import 'package:hive_goals_flutter/pages/contacts.dart';
+import 'package:hive_goals_flutter/pages/connections.dart';
+import 'package:hive_goals_flutter/pages/profile.dart';
+import 'package:hive_goals_flutter/pages/calendar.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,14 +25,18 @@ class HiveGoals extends StatefulWidget {
 
 class _HiveGoalsState extends State<HiveGoals> {
   
-  int _selectedIndex = 0;  // Default selected index is 0 (home page)
+  int _selectedIndex = 2;  // Default selected index is 0 (home page)
 
   // Define a method to change screen based on the selected index
   void _onTabTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  if (index == 3 || index == 6) {
+    // Do nothing when index is 3 or 6
+    return;
   }
+  setState(() {
+    _selectedIndex = index;
+  });
+}
 
   @override
   void initState() {
@@ -39,27 +48,23 @@ class _HiveGoalsState extends State<HiveGoals> {
   Widget _buildScreenForIndex(int index) {
     switch (index) {
       case 0:
-        return const Center(child: Text('Connections Page'));
+        return ConnectionsPage();
       case 1:
-        return const Center(child: Text('Messages Page'));
+        return ContactsPage(); 
       case 2:
-        return const Center(child: Text('Create Goal Screen'));
-      case 3:
-        // Calendar menu itself
-        return const Center(child: Text('Calendar Menu'));
+        return MyHomePage();
       case 4:
-        return const Center(child: Text('View Calendar'));
+        return ScheduleScreen();
       case 5:
-        return const Center(child: Text('Create Event'));
-      case 6:
-        // Goals menu itself
-        return const Center(child: Text('Goals Menu'));
+        return const CreateEventPage();
       case 7:
         return const CreateGoalPage();
       case 8:
         return const UserGoalPage();
+      case 9:
+        return ProfilePage();
       default:
-        return const MyHomePage(title: 'Hive Goals Home');
+        return MyHomePage();
     }
   }
 

@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       if (!mounted) return; 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) => const MyHomePage(title: 'Welcome @username'),
+          builder: (_) => MyHomePage(),
         ),
       );
     });
