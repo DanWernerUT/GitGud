@@ -10,5 +10,5 @@ class HiveColors {
   static const Color   platinum = Color.fromRGBO(217, 217, 217, 1); 
   static const Color   lavender = Color(0xFF817798);
   static const Color darkPurple = Color.fromRGBO(50, 43, 66, 1);    
-
+  static const Color background = lavender;
 }

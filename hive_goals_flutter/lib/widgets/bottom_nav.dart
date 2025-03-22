@@ -180,7 +180,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                       'lib/res/Connections.svg',
                       width: 24,
                       height: 24,
-                      color: effectiveActiveIndex == 0 ? HiveColors.bronze : HiveColors.darkPurple,
+                      colorFilter: ColorFilter.mode(effectiveActiveIndex == 0 ? HiveColors.bronze : HiveColors.darkPurple, BlendMode.srcIn,),
                     ), 
                     context,
                     effectiveActiveIndex
