@@ -1,130 +1,93 @@
 import 'package:flutter/material.dart';
-// import 'package:hive_goals_flutter/models/goal_model.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
-// import 'package:hive_goals_flutter/services/database_helper.dart';
-// import 'package:hive_goals_flutter/widgets/bottom_nav.dart';
-// import 'package:hive_goals_flutter/pages/goals.dart';
+import 'package:hive_goals_flutter/services/app_state.dart';
+import 'package:hive_goals_flutter/widgets/top_nav.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final textController = TextEditingController();
-  int? selectedId;
-  // int _selectedIndex = 2;
-  // late Future<List<Goal>> _goalsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    // _goalsFuture = DatabaseHelper.instance.getGoal();
-  }
-
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    double contentWidth = MediaQuery.of(context).size.width - 60;
+
     return Scaffold(
       backgroundColor: HiveColors.background,
-      appBar: AppBar(
-        backgroundColor: HiveColors.platinum,
-        title: TextField(
-          controller: textController,
-          decoration: InputDecoration(hintText: 'Enter Goal'),
+      appBar: TopAppBar(title: "Welcome John"),
+      body: Center(
+        child: SizedBox(
+          width: contentWidth,
+          child: Column(
+            children: [
+              // Task List
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                child: Column(
+                  children: List.generate(3, (index) {
+                    return Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.only(bottom: 8.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        children: [
+                          Checkbox(value: false, onChanged: (value) {}),
+                          const Text("Get out of bed", style: TextStyle(fontSize: 16)),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+              ),
+
+              // Grid for Goals, Calendar, Chat, Connect
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: GridView.count(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1.2,
+                    children: [
+                      _gridItem(Icons.track_changes, "Goals", 8),
+                      _gridItem(Icons.calendar_today, "Calendar", 4),
+                      _gridItem(Icons.chat, "Chat", 1),
+                      _gridItem(Icons.group, "Connect", 0),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      // body: _buildScreenForIndex(_selectedIndex),
-      // bottomNavigationBar: BottomNavBar(
-      //   currentIndex: _selectedIndex,
-      //   onTap: _onTabTapped,
-      // ),
-      // floatingActionButton: FloatingActionButton(
-      //   child: Icon(Icons.add),
-      //   onPressed: () async {
-      //     if (textController.text.isNotEmpty) {
-      //       if (selectedId != null) {
-      //         await DatabaseHelper.instance.update(
-      //           Goal(id: selectedId, name: textController.text, text: textController.text),
-      //         );
-      //       } else {
-      //         await DatabaseHelper.instance.add(
-      //           Goal(name: textController.text, text: textController.text),
-      //         );
-      //       }
-      //       _refreshGoals();
-      //       textController.clear();
-      //       selectedId = null;
-      //     }
-      //   },
-      // ),
     );
   }
 
-  // Widget _buildScreenForIndex(int index) {
-  //   switch (index) {  
-  //     case 0:
-  //       return Center(child: Text('Connections Page'));
-  //     case 1:
-  //       return Center(child: Text('Messages Page'));
-  //     case 2:
-  //       return _buildGoalList();
-  //       // return Center(child: Text('Home Page'));
-  //     case 3:
-  //       return Center(child: Text('Calendar'));
-  //     case 4:
-  //       return Center(child: Text('View Calendar'));
-  //     case 5:
-  //       return Center(child: Text('Create Event'));
-  //     case 6:
-  //       return Center(child: Text('Goals'));
-  //     case 7:
-  //       return Center(child: Text('Create Goal'));
-  //     case 8:
-  //       Navigator.push(context,MaterialPageRoute(builder: (context) => UserGoalPage()),);
-  //       return Center(child: Text('View Goals'));
-  //     default:
-  //       return Center(child: Text('Unknown Screen'));
-  //   }
-  // }
-
-  // Widget _buildGoalList() {
-  //   return FutureBuilder<List<Goal>>(
-  //     future: _goalsFuture,
-  //     builder: (BuildContext context, AsyncSnapshot<List<Goal>> snapshot) {
-  //       if (snapshot.connectionState == ConnectionState.waiting) {
-  //         return Center(child: CircularProgressIndicator());
-  //       }
-  //       if (!snapshot.hasData || snapshot.data!.isEmpty) {
-  //         return Center(child: Text(''));
-  //       }
-        
-  //       return ListView.builder(
-  //         itemCount: snapshot.data!.length,
-  //         itemBuilder: (context, index) {
-  //           final goal = snapshot.data![index];
-  //           return Card(
-  //             color: selectedId == goal.id ? Colors.white70 : Colors.white,
-  //             child: ListTile(
-  //               title: Text(goal.name),
-  //               onTap: () {
-  //                 setState(() {
-  //                   textController.text = goal.name;
-  //                   selectedId = goal.id;
-  //                 });
-  //               },
-  //               onLongPress: () async {
-  //                 await DatabaseHelper.instance.remove(goal.id!);
-  //                 _refreshGoals();
-  //               },
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
+  // Widget for Grid Items with Navigation
+  Widget _gridItem(IconData icon, String label, int tabIndex) {
+    return InkWell(
+      onTap: () {
+        AppState().changeTabCallback?.call(tabIndex);
+      },
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.8),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 48, color: Colors.black87),
+            const SizedBox(height: 10),
+            Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+    );
+  }
 }

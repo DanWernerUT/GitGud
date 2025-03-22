@@ -220,7 +220,6 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
           ],
         ),
       ),
-      // bottomNavigationBar: BottomNavBar(),
     );
   }
 

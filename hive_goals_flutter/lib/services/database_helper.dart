@@ -16,53 +16,52 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, 'goal.db');
     return await openDatabase(
       path,
-      version: 2,
+      version: 2,  // Increment when making schema changes
       onCreate: _onCreate,
       onUpgrade: _onUpgrade,
     );
   }
   
-  void _onUpgrade(Database db, int oldVersion, int newVersion) {
-    if(oldVersion < newVersion) {
-      db.execute("ALTER TABLE goal ADD COLUMN name TEXT;");
-      db.execute("ALTER TABLE goal ADD COLUMN text TEXT;");
-      db.execute("ALTER TABLE goal ADD COLUMN tags TEXT;");
-      db.execute("ALTER TABLE goal ADD COLUMN duration INTEGER;");
-    }
-  }
-
   Future _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE goal(
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        text TEXT,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        text TEXT NOT NULL,
         tags TEXT,
         duration INTEGER
       )
     ''');
   }
 
-  Future<List<Goal>> getGoal() async {
-    Database db = await instance.database;
-    var goal = await db.query('goal', orderBy: 'name');
-    List<Goal> goalList = goal.isNotEmpty
-      ? goal.map((c) => Goal.fromMap(c)).toList()
-      : [];
-      return goalList;
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute("ALTER TABLE goal ADD COLUMN name TEXT;");
+      await db.execute("ALTER TABLE goal ADD COLUMN text TEXT;");
+      await db.execute("ALTER TABLE goal ADD COLUMN tags TEXT;");
+      await db.execute("ALTER TABLE goal ADD COLUMN duration INTEGER;");
+    }
   }
 
-  Future<int> add(Goal goal) async {
+  Future<List<Goal>> getGoals() async {
+    Database db = await instance.database;
+    var goalList = await db.query('goal', orderBy: 'name');
+    return goalList.isNotEmpty
+      ? goalList.map((c) => Goal.fromMap(c)).toList()
+      : [];
+  }
+
+  Future<int> addGoal(Goal goal) async {
     Database db = await instance.database;
     return await db.insert('goal', goal.toMap());
   }
 
-  Future<int> remove(int id) async {
+  Future<int> removeGoal(int id) async {
     Database db = await instance.database;
     return await db.delete('goal', where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> update(Goal goal) async {
+  Future<int> updateGoal(Goal goal) async {
     Database db = await instance.database;
     return await db.update('goal', goal.toMap(), where: 'id = ?', whereArgs: [goal.id]);
   }
