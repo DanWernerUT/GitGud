@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:hive_goals_flutter/res/hive_colors.dart';
+import 'package:hive_goals_flutter/res/hive_text.dart';
 import 'package:hive_goals_flutter/widgets/top_nav.dart';
+import 'package:hive_goals_flutter/res/hive_colors.dart';
+import 'package:hive_goals_flutter/res/hive_style.dart';
+import 'package:date_field/date_field.dart';
 
 class CreateGoalPage extends StatefulWidget {
+  const CreateGoalPage({super.key});
+
   @override
-  _CreateGoalPageState createState() => _CreateGoalPageState();
+  CreateGoalPageState createState() => CreateGoalPageState();
 }
 
-class _CreateGoalPageState extends State<CreateGoalPage> {
+class CreateGoalPageState extends State<CreateGoalPage> {
+  bool repeat = false;
   bool daily = false;
   bool weekly = false;
   bool monthly = false;
   bool custom = false;
+  DateTime? selectedStartDate;
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +26,120 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
     return Scaffold(
       backgroundColor: HiveColors.background,
       appBar: TopAppBar(title: "Create Goal"),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox (
+              width: contentWidth,
+              child:Column(
+                children: [
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: [
+                      goalCategory("Education"),
+                      goalCategory("Fitness"),
+                      goalCategory("Mind"),
+                      goalCategory("Career"),
+                      goalCategory("Family"),
+                      goalCategory("Financial"),
+                      goalCategory("Spiritual"),
+                      goalCategory("Social"),
+                      goalCategory("Health", isSelected: true),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                HiveText.boldBody("Repeat  "),
+                _checkbox("", repeat, (bool? newValue) { setState(() { repeat = newValue!; if (!repeat) { daily = false; weekly = false; monthly = false; custom = false; } }); }),
+              ],
+            ),            
+            if(repeat) ...[
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      _checkbox("Daily", daily, (bool? newValue) { setState(() { daily = newValue!; if (daily) { weekly = false; monthly = false; custom = false; } }); }),
+                      SizedBox(width: 25),
+                      _checkbox("Weekly", weekly, (bool? newValue) { setState(() { weekly = newValue!; if (weekly) { daily = false; monthly = false; custom = false; } }); }),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      _checkbox("Monthly", monthly, (bool? newValue) { setState(() { monthly = newValue!; if (monthly) { daily = false; weekly = false; custom = false; } }); }),
+                      _checkbox("Custom", custom, (bool? newValue) { setState(() { custom = newValue!; if (custom) { daily = false; weekly = false; monthly = false; } }); }),
+                    ],
+                  ),
+                ],
+              ),
+            ],
+            TextField(
+              decoration: InputDecoration(
+                hintText: "Goal Name",
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            DateTimeFormField(
+              decoration: InputDecoration(
+                hintText: "Start Date",
+                hintStyle: HiveStyle.lightBody.copyWith(color: HiveColors.darkPurple),
+                filled: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                suffixIcon: Padding(padding: EdgeInsets.only(right: 20), child: Icon(Icons.calendar_today)),
+                alignLabelWithHint: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+              onChanged: (DateTime? value) {
+                selectedStartDate = value;
+              },
+            ),
+            SizedBox(height: 20),
+            DateTimeFormField(
+              decoration: InputDecoration(
+                hintText: "End Date",
+                hintStyle: HiveStyle.lightBody.copyWith(color: HiveColors.darkPurple),
+                filled: true,
+                contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                suffixIcon: Padding(padding: EdgeInsets.only(right: 20), child: Icon(Icons.calendar_today)),
+                alignLabelWithHint: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+              ),
+              onChanged: (DateTime? value) {
+                selectedStartDate = value;
+              },
+            ),
+          ],
+        ),
+      )
     );
   }
 
-  Widget _goalCategory(String title, {bool isSelected = false}) {
+  Widget _checkbox(String label, bool value, Function(bool?) onChanged) {
+    return Row(
+      children: [
+        Checkbox(value: value, onChanged: onChanged, activeColor: Colors.yellow),
+        HiveText(title: label, style: HiveStyle.boldBody.copyWith(color: HiveColors.platinum)),
+      ],
+    );
+  }
+
+  Widget goalCategory(String title, {bool isSelected = false}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
       decoration: BoxDecoration(
@@ -36,8 +153,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
   //     backgroundColor: HiveColors.background,
   //     appBar: AppBar(
   //       backgroundColor: Colors.transparent,
-  //       elevation: 0,
-  //       title: Text(
+  //       elevation: 0,r
   //         "Create Goal",
   //         style: TextStyle(color: Colors.white, fontSize: 24),
   //       ),

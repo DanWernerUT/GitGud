@@ -37,6 +37,7 @@ dependencies:
   sqflite: ^2.4.2
   path_provider: ^2.1.5
   path: ^1.8.3
+  date_field: ^6.0.3+1
   
 dev_dependencies:
   flutter_test:
@@ -82,16 +83,34 @@ flutter:
   fonts:
     - family: Raleway
       fonts:
-        - asset: res/fonts/Raleway/Raleway-VariableFont_wght.ttf
-        - asset: res/fonts/Raleway/Raleway-Italic-VariableFont_wght.ttf
-
+        - asset: lib/res/fonts/Raleway/Raleway-VariableFont_wght.ttf
+        - asset: lib/res/fonts/Raleway/Raleway-Italic-VariableFont_wght.ttf
+        - asset: lib/res/fonts/Raleway/static/Raleway-Thin.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-ExtraLight.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Light.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Regular.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Medium.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-SemiBold.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Bold.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-ExtraBold.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Black.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-ThinItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-ExtraLightItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-LightItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-Italic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-MediumItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-SemiBoldItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-BoldItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-ExtraBoldItalic.ttf
+        - asset: lib/res/fonts/Raleway/Raleway/static/Raleway-BlackItalic.ttf
+        
     - family: Mojangles
       fonts:
-        - asset: res/fonts/mojangles.ttf
+        - asset: lib/res/fonts/mojangles.ttf
 
     - family: Monocraft
       fonts:
-        - asset: res/fonts/Monocraft.ttf
+        - asset: lib/res/fonts/Monocraft.ttf
 
   # fonts:
   #   - family: Schyler

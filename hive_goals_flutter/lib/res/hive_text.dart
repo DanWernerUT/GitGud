@@ -7,11 +7,11 @@ class HiveText extends StatelessWidget {
 
   // Constructor to accept dynamic title and style
   const HiveText({
-    Key? key, // key is passed as a super parameter
+    super.key, // converted to a super parameter
     required this.title,
     required this.style,
     Color? color,
-  }) : super(key: key); 
+  });
   @override
   Widget build(BuildContext context) {
     return Text(
@@ -20,9 +20,10 @@ class HiveText extends StatelessWidget {
     );
   }
 
-  // Static method for a default light body text style
-  static Text   lightBody(String title) {return Text(title, style: TextStyle(fontFamily: 'Mojangles', fontSize: 36, fontWeight: FontWeight.w400, color: HiveColors.platinum),);}
-  static Text normalTitle(String title) {return Text(title, style: TextStyle(fontSize: 36, fontWeight: FontWeight.w500, color: HiveColors.platinum,),);}
-  static Text   boldTitle(String title) {return Text(title, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: HiveColors.platinum,),);}
-  static Text     caption(String title) {return Text(title, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300, color: HiveColors.platinum,),);}
+  static Text   lightBody(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Raleway-ExtraBold', fontSize: 16, fontWeight: FontWeight.w400, color: color ?? HiveColors.platinum,),);}
+  static Text    boldBody(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Raleway-ExtraBold', fontSize: 24, fontWeight: FontWeight.w600, color: color ?? HiveColors.platinum),);}
+  static Text   subHeader(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Mojangles', fontSize: 24, fontWeight: FontWeight.w400, color: color ?? HiveColors.platinum),);}
+  static Text normalTitle(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Raleway-Bold', fontSize: 36, fontWeight: FontWeight.w900, color: color ?? HiveColors.platinum,),);}
+  static Text   boldTitle(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Raleway-ExtraBold', fontSize: 40, fontWeight: FontWeight.w900, color: color ?? HiveColors.platinum,),);}
+  static Text     caption(String title, {Key? key, Color? color}) {return Text(title, key: key, style: TextStyle(fontFamily: 'Mojangles', fontSize: 14, fontWeight: FontWeight.w400, color: color ?? HiveColors.platinum,),);}
 }

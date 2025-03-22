@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
-import 'package:hive_goals_flutter/pages/splash.dart';
+// import 'package:hive_goals_flutter/pages/splash.dart';
 import 'package:hive_goals_flutter/pages/home.dart';
 import 'package:hive_goals_flutter/pages/goals.dart';
 import 'package:hive_goals_flutter/widgets/bottom_nav.dart';

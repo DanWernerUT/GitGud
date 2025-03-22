@@ -18,7 +18,12 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
   late AnimationController controllerMonthly;
   late AnimationController controllerTotal;
   int? selectedId;
-  late Future<List<Goal>> _goalsFuture;
+  // late Future<List<Goal>> _goalsFuture;
+  
+  // Maps to track the checked state of each goal
+  final Map<String, bool> dailyGoalsChecked = {};
+  final Map<String, bool> weeklyGoalsChecked = {};
+  final Map<String, bool> monthlyGoalsChecked = {};
   
   final List<String> dailyGoals = [
     'Complete Chapter 7',
@@ -44,13 +49,48 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
     controllerWeekly  = AnimationController(vsync: this, duration: const Duration(seconds: 1), value: 0.25);
     controllerMonthly = AnimationController(vsync: this, duration: const Duration(seconds: 1), value: 0.67);
     controllerTotal   = AnimationController(vsync: this, duration: const Duration(seconds: 1), value: 0.91);
-    _goalsFuture = DatabaseHelper.instance.getGoal();
+    // _goalsFuture = DatabaseHelper.instance.getGoal();
+    
+    // Initialize all goals as unchecked
+    for (var goal in dailyGoals) {
+      dailyGoalsChecked[goal] = false;
+    }
+    for (var goal in weeklyGoals) {
+      weeklyGoalsChecked[goal] = false;
+    }
+    for (var goal in monthlyGoals) {
+      monthlyGoalsChecked[goal] = false;
+    }
   }
 
-  void _refreshGoals() {
-    setState(() {
-      _goalsFuture = DatabaseHelper.instance.getGoal();
-    });
+  // void _refreshGoals() {
+  //   setState(() {
+  //     _goalsFuture = DatabaseHelper.instance.getGoal();
+  //   });
+  // }
+  
+  // Calculate progress based on checked goals
+  void _updateProgress() {
+    // Count checked goals
+    int dailyChecked = dailyGoalsChecked.values.where((checked) => checked).length;
+    int weeklyChecked = weeklyGoalsChecked.values.where((checked) => checked).length;
+    int monthlyChecked = monthlyGoalsChecked.values.where((checked) => checked).length;
+    
+    // Calculate progress percentages
+    double dailyProgress = dailyGoals.isEmpty ? 0 : dailyChecked / dailyGoals.length;
+    double weeklyProgress = weeklyGoals.isEmpty ? 0 : weeklyChecked / weeklyGoals.length;
+    double monthlyProgress = monthlyGoals.isEmpty ? 0 : monthlyChecked / monthlyGoals.length;
+    
+    // Calculate total progress
+    int totalChecked = dailyChecked + weeklyChecked + monthlyChecked;
+    int totalGoals = dailyGoals.length + weeklyGoals.length + monthlyGoals.length;
+    double totalProgress = totalGoals == 0 ? 0 : totalChecked / totalGoals;
+    
+    // Animate to new values
+    controllerDaily.animateTo(dailyProgress);
+    controllerWeekly.animateTo(weeklyProgress);
+    controllerMonthly.animateTo(monthlyProgress);
+    controllerTotal.animateTo(totalProgress);
   }
 
   @override
@@ -70,58 +110,122 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
     return Scaffold(
       backgroundColor: HiveColors.background,
       appBar: TopAppBar(title: "Goals"),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              Container(
-                width: contentWidth,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(30)),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildCircularProgress('76%', controllerDaily.value, HiveColors.yellow, 'Daily Progress'),
-                        _buildCircularProgress('25%', controllerWeekly.value, HiveColors.bronze, 'Weekly Progress'),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    _buildLinearProgress('Monthly Progress', controllerMonthly.value, HiveColors.yellow),
-                    const SizedBox(height: 15),
-                    _buildLinearProgress('Total Completed Goals', controllerTotal.value, HiveColors.bronze),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        child: Column(
+          children: [
+            Container(
+              width: contentWidth,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(30)),
+              child: Column(
                 children: [
-                  const Text(
-                    'Daily Goals',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, color: Colors.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildCircularProgress(
+                        '${(controllerDaily.value * 100).toInt()}%', 
+                        controllerDaily.value, 
+                        HiveColors.yellow, 
+                        'Daily Progress'
+                      ),
+                      _buildCircularProgress(
+                        '${(controllerWeekly.value * 100).toInt()}%', 
+                        controllerWeekly.value, 
+                        HiveColors.bronze, 
+                        'Weekly Progress'
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white, size: 32),
-                    onPressed: () {},
-                  ),
-                  const Text(
-                    'Weekly Goals'
-                  ),
-                    IconButton(
-                    icon: const Icon(Icons.add, color: Colors.white, size: 32),
-                    onPressed: () {},
-                  ),
+                  const SizedBox(height: 20),
+                  _buildLinearProgress('Monthly Progress', controllerMonthly.value, HiveColors.yellow),
+                  const SizedBox(height: 15),
+                  _buildLinearProgress('Total Completed Goals', controllerTotal.value, HiveColors.bronze),
                 ],
               ),
-              const SizedBox(height: 10),
-              ...dailyGoals.map((goal) => _buildGoalItem(goal, contentWidth)).toList(),
-              const SizedBox(height: 60),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Daily Goals',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, color: Colors.white),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add, color: Colors.white, size: 32),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ...dailyGoals.map((goal) => _buildGoalItem(
+              goal, 
+              contentWidth, 
+              dailyGoalsChecked[goal] ?? false,
+              (value) {
+                setState(() {
+                  dailyGoalsChecked[goal] = value ?? false;
+                  _updateProgress();
+                });
+              }
+            )).toList(),
+            const SizedBox(height: 20),
+            // Weekly Goals Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Weekly Goals',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, color: Colors.white),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add, color: Colors.white, size: 32),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ...weeklyGoals.map((goal) => _buildGoalItem(
+              goal, 
+              contentWidth, 
+              weeklyGoalsChecked[goal] ?? false,
+              (value) {
+                setState(() {
+                  weeklyGoalsChecked[goal] = value ?? false;
+                  _updateProgress();
+                });
+              }
+            )).toList(),
+            const SizedBox(height: 20),
+            // Monthly Goals Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Monthly Goals',
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w400, color: Colors.white),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.add, color: Colors.white, size: 32),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            ...monthlyGoals.map((goal) => _buildGoalItem(
+              goal, 
+              contentWidth, 
+              monthlyGoalsChecked[goal] ?? false,
+              (value) {
+                setState(() {
+                  monthlyGoalsChecked[goal] = value ?? false;
+                  _updateProgress();
+                });
+              }
+            )).toList(),
+            const SizedBox(height: 60),
+          ],
         ),
       ),
     );
@@ -168,14 +272,25 @@ class _UserGoalPageState extends State<UserGoalPage> with TickerProviderStateMix
     );
   }
 
-  Widget _buildGoalItem(String goal, double width) {
+  Widget _buildGoalItem(String goal, double width, bool isChecked, Function(bool?) onChanged) {
     return Container(
       width: width,
       margin: const EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(color: Colors.grey.shade300, borderRadius: BorderRadius.circular(30)),
       child: ListTile(
-        leading: Checkbox(value: false, onChanged: (value) {}),
-        title: Text(goal, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        leading: Checkbox(
+          value: isChecked,
+          onChanged: onChanged,
+          activeColor: HiveColors.yellow,
+        ),
+        title: Text(
+          goal, 
+          style: TextStyle(
+            fontSize: 18, 
+            fontWeight: FontWeight.bold,
+            decoration: isChecked ? TextDecoration.lineThrough : null,
+          )
+        ),
       ),
     );
   }
