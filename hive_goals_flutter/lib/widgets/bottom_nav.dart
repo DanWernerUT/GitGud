@@ -70,9 +70,23 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
       });
     }
   }
-  
+
+  int _highlightedIndex = 0;
+
   void _handleNavTap(int index) {
     switch(index){
+      case 0:
+        _highlightedIndex = 0;
+        widget.onTap(0);
+        break;
+      case 1:
+        _highlightedIndex = 1;
+        widget.onTap(1);
+        break;
+      case 2:
+        _highlightedIndex = 2;
+        widget.onTap(2);
+        break;
       case 3: 
         if(_isCalendarMenuOpen){
           _closeMenus();
@@ -80,13 +94,15 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
           _closeMenus();
          _toggleCalendarMenu();
         }
-        widget.onTap(3);
+        _highlightedIndex = 3;
         break;
       case 4:
         widget.onTap(4);
+        _highlightedIndex = 4;
         break;
       case 5:
         widget.onTap(5);
+        _highlightedIndex = 5;
         break;
       case 6:
         if(_isGoalsMenuOpen) {
@@ -95,13 +111,15 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
          _closeMenus();
          _toggleGoalsMenu();
         }
-        widget.onTap(6);
+        _highlightedIndex = 6;
         break;
       case 7:
         widget.onTap(7);
+        _highlightedIndex = 7;
         break;
       case 8:
         widget.onTap(8);
+       _highlightedIndex = 8;
         break;
       default: 
         _closeMenus();
@@ -113,7 +131,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final navBarWidth = MediaQuery.of(context).size.width - 60;
     
-    int effectiveActiveIndex = widget.currentIndex;    
+    int effectiveActiveIndex = _highlightedIndex;    
     return SizedBox(
       height: 250,
       child: Stack(
@@ -134,7 +152,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                       child: Container(
                         width: navBarWidth,
                         decoration: BoxDecoration(
-                          color: Colors.white70,
+                          color: HiveColors.steel,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(45),
                             topRight: Radius.circular(45),
@@ -170,7 +188,7 @@ class _BottomNavBarState extends State<BottomNavBar> with SingleTickerProviderSt
                       child: Container(
                         width: navBarWidth,
                         decoration: BoxDecoration(
-                          color: Colors.white70,
+                          color: HiveColors.steel,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(45),
                             topRight: Radius.circular(45),

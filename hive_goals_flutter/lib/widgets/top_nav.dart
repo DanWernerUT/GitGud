@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_goals_flutter/res/hive_colors.dart';
 import 'package:hive_goals_flutter/res/hive_text.dart';
+import 'package:hive_goals_flutter/services/app_state.dart';
 
 class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -17,19 +18,13 @@ class TopAppBar extends StatelessWidget implements PreferredSizeWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             HiveText.normalTitle(title),
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                child: Icon(
-                  Icons.person_outline,
-                  size: 40,
-                  color: HiveColors.background,
-                ),
+            CircleAvatar(
+              radius: 24,
+              backgroundColor: HiveColors.platinum,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.person_outline, color: HiveColors.darkPurple, size: 40),
+                  onPressed: () {AppState().changeTabCallback?.call(9);},
               ),
             ),
           ],
