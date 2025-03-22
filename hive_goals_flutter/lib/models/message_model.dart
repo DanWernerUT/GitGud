@@ -8,7 +8,7 @@ class Message {
   final bool isRead;
 
   Message({
-    required this.id,
+    required this.id, 
     required this.content,
     required this.timestamp,
     required this.isSentByMe,
